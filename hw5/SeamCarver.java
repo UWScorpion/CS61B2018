@@ -9,7 +9,7 @@ public class SeamCarver {
     private double[][] energy;
     //A constructor
     public SeamCarver(Picture picture){
-        this.pic = picture;
+        this.pic = new Picture(picture);
         energy = new double[pic.height()][pic.width()];
         for (int i = 0; i < pic.height(); i++){
             for (int j = 0; j < pic.width(); j++){
