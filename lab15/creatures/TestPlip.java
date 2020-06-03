@@ -36,12 +36,10 @@ public class TestPlip {
 
     @Test
     public void testReplicate() {
-        Plip p = new Plip(2);
-        Plip p1 = p.replicate();
-        assertNotSame(p, p1);
+
     }
 
-    @Test
+    //@Test
     public void testChoose() {
         Plip p = new Plip(1.2);
         HashMap<Direction, Occupant> surrounded = new HashMap<Direction, Occupant>();
@@ -58,11 +56,6 @@ public class TestPlip {
         Action expected = new Action(Action.ActionType.STAY);
 
         assertEquals(expected, actual);
-
-
-
-
-
     }
 
     public static void main(String[] args) {

@@ -19,8 +19,6 @@ public class Plip extends Creature {
     private int g;
     /** blue color. */
     private int b;
-    /** probability of taking a move when ample space available. */
-    private double moveProbability = 0.5;
 
     /** creates plip with energy equal to E. */
     public Plip(double e) {
@@ -44,9 +42,7 @@ public class Plip extends Creature {
      *  that you get this exactly correct.
      */
     public Color color() {
-        r = 99;
-        g = 63 + (int)(energy * (255.0 - 63.0) * 0.5);
-        b = 76;
+        g = 63;
         return color(r, g, b);
     }
 
@@ -59,16 +55,11 @@ public class Plip extends Creature {
      *  private static final variable. This is not required for this lab.
      */
     public void move() {
-        energy -= 0.15;
     }
 
 
     /** Plips gain 0.2 energy when staying due to photosynthesis. */
     public void stay() {
-        energy += 0.2;
-        if (energy >= 2){
-            energy = 2;
-        }
     }
 
     /** Plips and their offspring each get 50% of the energy, with none
@@ -76,7 +67,7 @@ public class Plip extends Creature {
      *  Plip.
      */
     public Plip replicate() {
-        return new Plip(0.5 * energy);
+        return this;
     }
 
     /** Plips take exactly the following actions based on NEIGHBORS:
@@ -90,31 +81,6 @@ public class Plip extends Creature {
      *  for an example to follow.
      */
     public Action chooseAction(Map<Direction, Occupant> neighbors) {
-        List<Direction> empties = getNeighborsOfType(neighbors, "empty");
-        // If there are no empty spaces, the Plip should STAY.
-        if (empties.size() == 0) {
-            return new Action(Action.ActionType.STAY);
-        }
-        // if the Plip has energy greater than 1.0, it should replicate to an available space.
-        if (energy > 1.0){
-            Direction moveDir = HugLifeUtils.randomEntry(empties);
-            return new Action(Action.ActionType.REPLICATE, moveDir);
-        }
-//        if it sees a neighbor with name() equal to “clorus”, it will move to
-//        any available empty square with probability 50%. It should choose
-//        the empty square randomly. As an example, if it sees a Clorus to
-//        the LEFT and to the BOTTOM, and “empty” to the TOP and RIGHT,
-//        there is a 50% chance it will move (due to fear of Cloruses),
-//        and if it does move, it will pick randomly between RIGHT and TOP.
-        List<Direction> cloruses = getNeighborsOfType(neighbors, "clorus");
-        if (cloruses.size() != 0) {
-            if (HugLifeUtils.random() < moveProbability){
-                Direction moveDir = HugLifeUtils.randomEntry(empties);
-                return new Action(Action.ActionType.MOVE, moveDir);
-            }
-        }
-
-//        Otherwise, it will stay.
         return new Action(Action.ActionType.STAY);
     }
 
