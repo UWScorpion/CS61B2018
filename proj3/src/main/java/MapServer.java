@@ -4,12 +4,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.IOException;
@@ -285,7 +280,11 @@ public class MapServer {
      * cleaned <code>prefix</code>.
      */
     public static List<String> getLocationsByPrefix(String prefix) {
-        return new LinkedList<>();
+        String incoming_prefix = GraphDB.cleanString(prefix);
+        HashSet<String> locations = graph.getAll_names();
+        AugmentedStreetMapGraph ASM = new AugmentedStreetMapGraph(incoming_prefix, locations);
+        List<String> res = ASM.getLocationList();
+        return res;
     }
 
     /**

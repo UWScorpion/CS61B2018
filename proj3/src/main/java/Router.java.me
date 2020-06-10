@@ -28,7 +28,6 @@ public class Router {
         List<Long> res  = new ArrayList<>();
         ArrayHeapMinPQ<routeNode> PQ = new ArrayHeapMinPQ<>();
         HashMap<Long, routeNode> map = new HashMap<>();
-        HashMap<Long, Long> edgeto = new HashMap<>();
         long startID = g.closest(stlon,stlat);
         long destID = g.closest(destlon, destlat);
         Iterable<Long> all_the_vertices = g.vertices();
@@ -42,24 +41,21 @@ public class Router {
         while(PQ.size() != 0){
             routeNode curr = PQ.removeSmallest();
             map.remove(curr.id);
+            res.add(curr.id);
+            if (curr.id == destID){
+                break;
+            }
             Iterable<Long> neighbors = g.adjacent(curr.id);
             for (Long item:neighbors){
                 if (map.containsKey(item)) {
                     double dist = curr.dist_so_far + g.distance(curr.id, item);
                     if (dist < map.get(item).dist_so_far) {
                         map.get(item).dist_so_far = dist;
-                        edgeto.put(item, curr.id);
                     }
                     PQ.changePriority(map.get(item), dist + g.distance(item, destID));
                 }
             }
 
-        }
-        long start = destID;
-        res.add(destID);
-        while(start != startID){
-            start = edgeto.get(start);
-            res.add(0, start);
         }
 
         return res; // FIXME
@@ -82,7 +78,6 @@ public class Router {
      * route.
      */
     public static List<NavigationDirection> routeDirections(GraphDB g, List<Long> route) {
-
         return null; // FIXME
     }
 

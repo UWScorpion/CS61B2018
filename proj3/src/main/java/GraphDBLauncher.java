@@ -1,3 +1,4 @@
+import java.util.HashSet;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -34,5 +35,8 @@ public class GraphDBLauncher {
         System.out.println(" has longitude, latitude of: " + g.lon(v) + ", " + g.lat(v));
 
         System.out.println("To get started, uncomment print statements in GraphBuildingHandler.");
+
+        HashSet<String> locations = g.getAll_names();
+        System.out.print(locations);
     }
 }

@@ -23,6 +23,8 @@ public class GraphDB {
      * creating helper classes, e.g. Node, Edge, etc. */
     private final Map<Long, Node> Nodes = new LinkedHashMap<>();
     private final Map<Long, Edge> Edges = new LinkedHashMap<>();
+    private final HashSet<String> all_names = new HashSet<>();
+
     /**
      * Example constructor shows how to create and start an XML parser.
      * You do not need to modify this constructor, but you're welcome to do so.
@@ -184,11 +186,27 @@ public class GraphDB {
     // add a node to the GraphDB
     void addNode(Node n){
         Nodes.put(n.id, n);
+        if (n.extraInfo.containsKey("name")){
+            String s = cleanString(n.extraInfo.get("name"));
+            if (s != null && s.length() != 0) {
+                all_names.add(s);
+            }
+        }
     }
     // add a way to the GraphDB and connect the nodes on the way
     void addEdge(Edge e){
         Edges.put(e.id, e);
+        if (e.extraInfo.containsKey("name")){
+            String s = cleanString(e.extraInfo.get("name"));
+            if (s != null && s.length() != 0) {
+                all_names.add(s);
+            }
+        }
     }
+    HashSet<String> getAll_names(){
+        return all_names;
+    }
+
     void connect(ArrayList<Long> possible_nodes){
         if (possible_nodes.size() > 1){
             for (int i =1; i < possible_nodes.size(); i++){
@@ -197,11 +215,16 @@ public class GraphDB {
             }
         }
     }
-
     // remove a node
     private void removeNode(long v){
         Nodes.remove(v);
     }
+
+
+
+
+
+
     // Node class to store the node information with the neibors in a HashSet
     static class Node{
         long id;

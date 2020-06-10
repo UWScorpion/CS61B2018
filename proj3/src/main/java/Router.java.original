@@ -1,4 +1,5 @@
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,55 +23,9 @@ public class Router {
      * @param destlat The latitude of the destination location.
      * @return A list of node id's in the order visited on the shortest path.
      */
-
     public static List<Long> shortestPath(GraphDB g, double stlon, double stlat,
                                           double destlon, double destlat) {
-        List<Long> res  = new ArrayList<>();
-        ArrayHeapMinPQ<routeNode> PQ = new ArrayHeapMinPQ<>();
-        HashMap<Long, routeNode> map = new HashMap<>();
-        HashMap<Long, Long> edgeto = new HashMap<>();
-        long startID = g.closest(stlon,stlat);
-        long destID = g.closest(destlon, destlat);
-        Iterable<Long> all_the_vertices = g.vertices();
-        for (Long vertice: all_the_vertices){
-            routeNode item  = new routeNode(vertice);
-            PQ.add(item, Double.MAX_VALUE);
-            map.put(vertice, item);
-        }
-        map.get(startID).dist_so_far = 0;
-        PQ.changePriority(map.get(startID), 0);
-        while(PQ.size() != 0){
-            routeNode curr = PQ.removeSmallest();
-            map.remove(curr.id);
-            Iterable<Long> neighbors = g.adjacent(curr.id);
-            for (Long item:neighbors){
-                if (map.containsKey(item)) {
-                    double dist = curr.dist_so_far + g.distance(curr.id, item);
-                    if (dist < map.get(item).dist_so_far) {
-                        map.get(item).dist_so_far = dist;
-                        edgeto.put(item, curr.id);
-                    }
-                    PQ.changePriority(map.get(item), dist + g.distance(item, destID));
-                }
-            }
-
-        }
-        long start = destID;
-        res.add(destID);
-        while(start != startID){
-            start = edgeto.get(start);
-            res.add(0, start);
-        }
-
-        return res; // FIXME
-    }
-    static class routeNode{
-        long id;
-        double dist_so_far;
-        public routeNode(long id){
-            this.id = id;
-            this.dist_so_far = Double.MAX_VALUE;
-        }
+        return null; // FIXME
     }
 
     /**
@@ -82,7 +37,6 @@ public class Router {
      * route.
      */
     public static List<NavigationDirection> routeDirections(GraphDB g, List<Long> route) {
-
         return null; // FIXME
     }
 

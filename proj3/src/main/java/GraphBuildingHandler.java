@@ -81,13 +81,13 @@ public class GraphBuildingHandler extends DefaultHandler {
             n = new GraphDB.Node(Long.parseLong(attributes.getValue("id")),
                     Double.parseDouble(attributes.getValue("lon")),
                     Double.parseDouble(attributes.getValue("lat")));
-            g.addNode(n);
+
         } else if (qName.equals("way")) {
             /* We encountered a new <way...> tag. */
             activeState = "way";
 //            System.out.println("Beginning a way...");
             e = new GraphDB.Edge(Long.parseLong(attributes.getValue("id")));
-            g.addEdge(e);
+
         } else if (activeState.equals("way") && qName.equals("nd")) {
             /* While looking at a way, we found a <nd...> tag. */
             //System.out.println("Id of a node in this way: " + attributes.getValue("ref"));
@@ -143,7 +143,11 @@ public class GraphBuildingHandler extends DefaultHandler {
      */
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
+        if (qName.equals("node")) {
+            g.addNode(n);
+        }
         if (qName.equals("way")) {
+            g.addEdge(e);
             /* We are done looking at a way. (We finished looking at the nodes, speeds, etc...)*/
             /* Hint1: If you have stored the possible connections for this way, here's your
             chance to actually connect the nodes together if the way is valid. */
